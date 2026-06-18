@@ -2,7 +2,6 @@
 ![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Database-green)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-orange)
-![License](https://img.shields.io/badge/License-MIT-blue)
 
 # 🍽️ InvHub – Restaurant Inventory Management SaaS
 
