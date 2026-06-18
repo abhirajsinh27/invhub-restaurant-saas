@@ -1,193 +1,284 @@
-# InvHub — Multi-Tenant Restaurant Inventory Operations SaaS
+![React](https://img.shields.io/badge/React-19-blue)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-green)
+![JWT](https://img.shields.io/badge/JWT-Authentication-orange)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-InvHub is a modern full-stack Restaurant Inventory Operations SaaS platform built with React, Node.js, Express, and MongoDB.
+# 🍽️ InvHub – Restaurant Inventory Management SaaS
 
-The application supports organization-based inventory isolation, role-based workflows, stock usage tracking, request approvals, operational dashboards, notifications, and inventory activity management for restaurant teams.
-
----
-
-# 🚀 Features
-
-## Authentication & Security
-- JWT Authentication
-- HttpOnly Cookie-based Sessions
-- Protected Backend Routes
-- Role-Based Access Control (Admin / Staff)
+InvHub is a SaaS-based inventory management system designed for restaurants and food businesses. It helps restaurant owners and staff efficiently manage inventory, track stock levels, monitor inventory activities, and maintain accurate records through a secure role-based platform.
 
 ---
 
-## Multi-Tenant SaaS Architecture
-- Organization-based workspace system
-- Separate restaurant inventory isolation
-- Join-code onboarding system
-- Staff Management
+## 🚀 Features
+
+### 🔐 Authentication & Authorization
+
+* JWT Authentication
+* HttpOnly Cookie-Based Sessions
+* Secure Password Hashing (bcrypt)
+* Protected Routes
+* User Session Restoration
+* Role-Based Access Control
+
+### 👥 User Roles
+
+#### Admin
+
+* Add Products
+* Update Products
+* Delete Products
+* View Inventory Activities
+* Full Inventory Access
+
+#### Staff
+
+* View Products
+* Update Product Quantities
+* Add Inventory Activities
+* Restricted Administrative Access
+
+### 📦 Inventory Management
+
+* Add New Products
+* Update Existing Products
+* Delete Products
+* Product Quantity Tracking
+* Category Management
+* Inventory Value Monitoring
+
+### 📊 Dashboard Analytics
+
+* Total Products
+* Low Stock Products
+* Out of Stock Products
+* Inventory Statistics
+* Activity Overview
+
+### 📝 Activity Tracking
+
+* Stock Added Records
+* Stock Removed Records
+* Inventory Updates
+* Activity History Logs
+* User-Based Tracking
+
+### 🎨 Modern User Interface
+
+* Responsive Design
+* SaaS Dashboard Layout
+* Sidebar Navigation
+* Mobile Friendly
+* Reusable Components
+* Clean User Experience
 
 ---
 
-## Inventory Operations
-- Product Management
-- Inventory Tracking
-- Restaurant Measurement Units (KG, Liter, Bottle, Packet, etc.)
-- Stock Usage Logging
-- Restock Request Workflow
-- Inventory Movement Tracking
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js
+* Vite
+* Tailwind CSS
+* React Router DOM
+* Context API
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* MongoDB
+* Mongoose
+
+### Authentication
+
+* JWT (JSON Web Token)
+* HttpOnly Cookies
+* bcrypt
 
 ---
 
-## Workflow System
-- Staff Request Approval System
-- Admin Review Dashboard
-- Activity Logging
-- Operational Notifications
-- Low Stock Alerts
+## 📂 Project Structure
 
----
-
-## SaaS Dashboard & UI
-- Modern Minimal SaaS UI
-- Dark / Light Theme System
-- Responsive Dashboard
-- Notifications Dropdown
-- Profile & Organization Overview
-- Analytics & Reports
-
----
-
-# 🛠️ Tech Stack
-
-## Frontend
-- React
-- React Router
-- TailwindCSS
-- Lucide React
-
-## Backend
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- JWT Authentication
-- Cookie Parser
-
----
-
-# 🏗️ Architecture Highlights
-
-## Multi-Tenant System
-Each restaurant operates inside its own isolated organization workspace.
-
-All:
-- products
-- requests
-- activities
-- notifications
-
-are scoped using `organizationId`.
-
----
-
-## Role-Based Access Control
-The platform supports:
-- Admin
-- Staff
-
-Admins can:
-- manage inventory
-- approve requests
-- manage staff
-
-Staff can:
-- use stock
-- create restock requests
-- track operational activities
-
----
-
-## Operational Workflow
-
-```txt
-Staff Uses Inventory
-↓
-Inventory Quantity Updates
-↓
-Low Stock Detection
-↓
-Request Created
-↓
-Admin Reviews Request
-↓
-Inventory Updated
-↓
-Notifications Generated
-↓
-Activities Logged
+```bash
+InvHub/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── context/
+│   │   ├── routes/
+│   │   └── services/
+│   │
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── config/
+│   └── server.js
+│
+└── README.md
 ```
 
 ---
 
-# 📦 Installation
+## 🔄 Application Workflow
 
-## Clone Repository
+### User Registration
 
-```bash
-git clone YOUR_REPOSITORY_URL
+1. User registers an account.
+2. Password is hashed using bcrypt.
+3. User information is stored in MongoDB.
+4. Account is created successfully.
+
+### User Login
+
+1. User enters email and password.
+2. Server validates credentials.
+3. JWT token is generated.
+4. Token is stored in an HttpOnly cookie.
+5. User gains secure access to protected routes.
+
+### Inventory Management
+
+1. Admin adds products.
+2. Products are stored in MongoDB.
+3. Inventory activities are logged.
+4. Dashboard statistics are updated automatically.
+
+---
+
+## 🔑 Authentication Flow
+
+```text
+User Login
+    ↓
+JWT Token Generated
+    ↓
+Stored in HttpOnly Cookie
+    ↓
+Authentication Middleware
+    ↓
+Protected Routes Access
+    ↓
+Authorized User Actions
 ```
 
 ---
 
-## Frontend Setup
+## 📈 Learning Outcomes
+
+This project helped me gain practical experience in:
+
+* MERN Stack Development
+* JWT Authentication
+* HttpOnly Cookie Security
+* REST API Development
+* MongoDB Data Modeling
+* Mongoose ODM
+* Express Middleware
+* Role-Based Authorization
+* State Management
+* Full-Stack Application Architecture
+
+---
+
+## 🔮 Future Enhancements
+
+* Supplier Management
+* Purchase Orders
+* Low Stock Notifications
+* Email Alerts
+* Inventory Reports
+* CSV/PDF Export
+* Advanced Search & Filters
+* Multi-Restaurant Support
+* Analytics Dashboard
+* Audit Logs
+
+---
+
+## ⚙️ Installation
+
+### Clone Repository
 
 ```bash
-cd client
+git clone https://github.com/abhirajsinh27/invhub-restaurant-saas.git
+```
+
+### Install Frontend Dependencies
+
+```bash
+cd frontend
 npm install
+```
+
+### Install Backend Dependencies
+
+```bash
+cd backend
+npm install
+```
+
+### Run Frontend
+
+```bash
 npm run dev
 ```
 
----
-
-## Backend Setup
+### Run Backend
 
 ```bash
-cd server
-npm install
-npm run dev
+npm run server
 ```
 
 ---
 
-# 🔐 Environment Variables
+## 🌟 Key Highlights
 
-Create `.env` inside server folder:
-
-```env
-MONGO_URI=your_mongodb_connection
-JWT_SECRET=your_secret_key
-```
-
----
-
-# 🌙 Theme System
-
-InvHub supports:
-- Light Mode
-- Dark Mode
-
-Theme preferences are persisted using localStorage and applied globally using Tailwind dark mode classes.
+* Full-Stack MERN Application
+* Secure JWT Authentication
+* HttpOnly Cookie Sessions
+* Role-Based Access Control
+* Inventory Tracking System
+* Activity Logging
+* RESTful APIs
+* Responsive SaaS Dashboard
 
 ---
 
-# 🚀 Future Improvements
+## 👨‍💻 Developer
 
-- Email Invitations
-- Advanced Reports
-- Inventory Forecasting
-- Mobile Optimization
-- Export Systems
+**Abhirajsinh Vala**
+
+B.Tech Computer Engineering
+Indus University
+
+### Skills Demonstrated
+
+* React.js
+* Node.js
+* Express.js
+* MongoDB
+* JWT Authentication
+* REST APIs
+* Context API
+* Tailwind CSS
+* Full-Stack Development
 
 ---
 
-# 👨‍💻 Author
+## 📌 Project Objective
 
-Developed by VALA ABHIRAJSINH
+The goal of InvHub is to provide restaurants with a secure and efficient inventory management solution while demonstrating modern full-stack development practices. The system focuses on authentication, authorization, inventory tracking, activity monitoring, and scalable SaaS architecture.
 
-Final Year Computer Engineering Project
+⭐ If you found this project useful, consider giving it a star.
