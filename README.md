@@ -176,19 +176,6 @@ Theme preferences are persisted using localStorage and applied globally using Ta
 
 ---
 
-# 📸 Screenshots
-
-Add screenshots here:
-- Dashboard
-- Inventory
-- Requests
-- Notifications
-- Dark Mode
-- Staff Dashboard
-- Admin Dashboard
-
----
-
 # 🚀 Future Improvements
 
 - Email Invitations
