@@ -107,15 +107,14 @@ InvHub is a SaaS-based inventory management system designed for restaurants and 
 InvHub/
 │
 ├── src/
-│   |───|
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   ├── routes/
-│   │   └── services/
-│   │
-│   ├── App.jsx
-│   └── main.jsx
+│   ├── components/
+│   ├── pages/
+│   ├── context/
+│   ├── routes/
+│   │── services/
+│   
+│── App.jsx
+│── main.jsx
 │
 ├── server/
 │   ├── controllers/
