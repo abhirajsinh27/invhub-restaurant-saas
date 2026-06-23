@@ -16,32 +16,56 @@ import Profile from "./pages/Profile";
 import StaffManagement from "./pages/StaffManagement";
 import NotificationsPage from "./pages/NotificationsPage";
 import { ThemeProvider } from "./context/ThemeContext";
+import { API_URL } from "./config";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [activityLogs, setActivityLogs] = useState([]);
+  const [loadingActivities, setLoadingActivities] = useState(true);
+  const [error, setError] = useState(null);
+
   const { isAuthenticated, loading } = useAuth();
 
   useEffect(() => {
     if (loading || !isAuthenticated) return;
 
-    fetch("http://localhost:3000/products", {
+    setLoadingProducts(true);
+    setError(null);
+
+    fetch(`${API_URL}/products`, {
       credentials: "include",
     })
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Error fetching products:", err));
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to connect to the backend server. Please verify your connection.");
+        return res.json();
+      })
+      .then((data) => {
+        setProducts(data);
+        setLoadingProducts(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        setError(err.message);
+        setLoadingProducts(false);
+      });
   }, [isAuthenticated, loading]);
 
-  const [activityLogs, setActivityLogs] = useState([]);
-
   const fetchActivities = () => {
-    fetch("http://localhost:3000/activities", { credentials: "include" })
-      .then((res) => res.json())
+    setLoadingActivities(true);
+    fetch(`${API_URL}/activities`, { credentials: "include" })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load activity logs.");
+        return res.json();
+      })
       .then((data) => {
         setActivityLogs(data);
+        setLoadingActivities(false);
       })
       .catch((err) => {
         console.error("Error fetching activities:", err);
+        setLoadingActivities(false);
       });
   };
 
@@ -53,6 +77,13 @@ function App() {
 
   return (
     <ThemeProvider>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          className: "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800 shadow-lg rounded-xl font-medium text-sm p-4",
+          duration: 3500,
+        }}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/register" element={<Register />} />
@@ -68,7 +99,13 @@ function App() {
             <Route
               index
               element={
-                <Dashboard products={products} activityLogs={activityLogs} />
+                <Dashboard
+                  products={products}
+                  activityLogs={activityLogs}
+                  loadingProducts={loadingProducts}
+                  loadingActivities={loadingActivities}
+                  error={error}
+                />
               }
             />
             <Route
@@ -78,6 +115,8 @@ function App() {
                   products={products}
                   setProducts={setProducts}
                   fetchActivities={fetchActivities}
+                  loadingProducts={loadingProducts}
+                  error={error}
                 />
               }
             />
@@ -100,6 +139,8 @@ function App() {
                   products={products}
                   setProducts={setProducts}
                   fetchActivities={fetchActivities}
+                  loadingProducts={loadingProducts}
+                  error={error}
                 />
               }
             />

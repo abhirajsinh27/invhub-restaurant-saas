@@ -1,14 +1,16 @@
-import { Pencil, Trash2, Plus, Filter, X } from "lucide-react";
+import { Pencil, Trash2, Plus, Filter, X, Loader2, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { API_URL } from "../config";
+import toast from "react-hot-toast";
 import StatusBadge from "../components/shared/StatusBadge";
 import ProductRows from "../components/products/ProductRows";
 import ProductFilters from "../components/products/ProductFilters";
 import EditProductPanel from "../components/products/EditProductPanel";
 import { getProductStatus, validateProduct } from "../helpers/productHelpers";
 
-function Products({ products, setProducts, fetchActivities }) {
+function Products({ products, setProducts, fetchActivities, loadingProducts, error }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchItem, setSearchItem] = useState("");
@@ -47,10 +49,10 @@ function Products({ products, setProducts, fetchActivities }) {
   const handleSave = () => {
     const validate = validateProduct(editData);
     if (!validate.valid) {
-      alert(validate.message);
+      toast.error(validate.message);
       return;
     }
-    fetch(`http://localhost:3000/products/${editingId}`, {
+    fetch(`${API_URL}/products/${editingId}`, {
       credentials: "include",
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -63,15 +65,16 @@ function Products({ products, setProducts, fetchActivities }) {
         );
         fetchActivities();
         setEditingId(null);
+        toast.success("Product updated successfully");
       })
-      .catch(() => alert("Failed to update item. Please try again."));
+      .catch(() => toast.error("Failed to update item. Please try again."));
   };
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       const productToDelete = products.find((p) => p._id === id);
 
-      fetch(`http://localhost:3000/products/${id}`, {
+      fetch(`${API_URL}/products/${id}`, {
         credentials: "include",
         method: "DELETE",
       })
@@ -79,7 +82,7 @@ function Products({ products, setProducts, fetchActivities }) {
           const data = await res.json();
 
           if (!res.ok) {
-            alert(data.message);
+            toast.error(data.message);
             return null;
           }
 
@@ -92,14 +95,15 @@ function Products({ products, setProducts, fetchActivities }) {
 
           fetchActivities();
           setProducts(updated);
+          toast.success("Product deleted successfully");
         })
-        .catch(() => alert("Failed to delete item. Please try again."));
+        .catch(() => toast.error("Failed to delete item. Please try again."));
     }
   };
 
   const handleClearAll = () => {
     if (products.length === 0) {
-      alert("No items to clear");
+      toast.error("No items to clear");
       return;
     }
     if (
@@ -107,7 +111,7 @@ function Products({ products, setProducts, fetchActivities }) {
         "Are you sure you want to delete ALL items? This cannot be undone.",
       )
     ) {
-      fetch("http://localhost:3000/products", {
+      fetch(`${API_URL}/products`, {
         credentials: "include",
         method: "DELETE",
       })
@@ -120,8 +124,9 @@ function Products({ products, setProducts, fetchActivities }) {
         .then(() => {
           fetchActivities();
           setProducts([]);
+          toast.success("Catalog cleared successfully");
         })
-        .catch((err) => alert(err.message));
+        .catch((err) => toast.error(err.message));
     }
   };
 
@@ -131,7 +136,7 @@ function Products({ products, setProducts, fetchActivities }) {
         "Do you want to seed realistic restaurant products (Tomato, Milk, Chicken, etc.)?",
       )
     ) {
-      fetch("http://localhost:3000/products/seed", {
+      fetch(`${API_URL}/products/seed`, {
         method: "POST",
         credentials: "include",
       })
@@ -143,8 +148,9 @@ function Products({ products, setProducts, fetchActivities }) {
         .then((data) => {
           setProducts(data);
           fetchActivities();
+          toast.success("Demo catalog seeded successfully");
         })
-        .catch((err) => alert("❌ Error: " + err.message));
+        .catch((err) => toast.error("Error: " + err.message));
     }
   };
 
@@ -198,16 +204,32 @@ function Products({ products, setProducts, fetchActivities }) {
         </div>
       </div>
 
-      {/* Filter Section */}
-      <ProductFilters
-        filterStatus={filterStatus}
-        setFilterStatus={setFilterStatus}
-        categories={categories}
-        filterCategory={filterCategory}
-        setFilterCategory={setFilterCategory}
-        searchItem={searchItem}
-        setSearchItem={setSearchItem}
-      />
+      {error && (
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 text-red-700 dark:text-red-400 rounded-xl flex items-center gap-3 animate-slideIn">
+          <AlertCircle className="flex-shrink-0" size={18} />
+          <span className="text-sm font-semibold">{error}</span>
+        </div>
+      )}
+
+      {loadingProducts ? (
+        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+          <Loader2 className="w-10 h-10 text-purple-650 animate-spin" />
+          <p className="text-slate-500 dark:text-slate-400 mt-4 text-sm font-medium">
+            Loading products catalog...
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Filter Section */}
+          <ProductFilters
+            filterStatus={filterStatus}
+            setFilterStatus={setFilterStatus}
+            categories={categories}
+            filterCategory={filterCategory}
+            setFilterCategory={setFilterCategory}
+            searchItem={searchItem}
+            setSearchItem={setSearchItem}
+          />
 
       {/* Table */}
       {filteredProducts.length === 0 ? (
@@ -298,6 +320,8 @@ function Products({ products, setProducts, fetchActivities }) {
             </table>
           </div>
         </div>
+      )}
+        </>
       )}
 
       {/* Overlay */}

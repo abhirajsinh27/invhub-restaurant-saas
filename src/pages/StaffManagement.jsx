@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { API_URL } from "../config";
+import toast from "react-hot-toast";
 import {
   Users,
   Copy,
@@ -27,7 +29,7 @@ function StaffManagement() {
 
   const fetchMembers = () => {
     setLoading(true);
-    fetch("http://localhost:3000/organizations/members", {
+    fetch(`${API_URL}/organizations/members`, {
       credentials: "include",
     })
       .then((res) => {
@@ -61,7 +63,7 @@ function StaffManagement() {
     )
       return;
 
-    fetch(`http://localhost:3000/organizations/members/${memberId}/role`, {
+    fetch(`${API_URL}/organizations/members/${memberId}/role`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -72,10 +74,10 @@ function StaffManagement() {
         return res.json();
       })
       .then(() => {
-        alert("✅ Member role updated successfully!");
+        toast.success("Member role updated successfully!");
         fetchMembers();
       })
-      .catch((err) => alert("❌ Error: " + err.message));
+      .catch((err) => toast.error("Error: " + err.message));
   };
 
   const handleRemoveMember = (memberId, memberName) => {
@@ -86,7 +88,7 @@ function StaffManagement() {
     )
       return;
 
-    fetch(`http://localhost:3000/organizations/members/${memberId}`, {
+    fetch(`${API_URL}/organizations/members/${memberId}`, {
       method: "DELETE",
       credentials: "include",
     })
@@ -95,10 +97,10 @@ function StaffManagement() {
         return res.json();
       })
       .then(() => {
-        alert("✅ Member removed successfully.");
+        toast.success("Member removed successfully.");
         fetchMembers();
       })
-      .catch((err) => alert("❌ Error: " + err.message));
+      .catch((err) => toast.error("Error: " + err.message));
   };
 
   return (

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import StatCard from "../components/shared/StatCard";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
+
 import {
   TrendingDown,
   AlertCircle,
@@ -16,7 +18,13 @@ import {
   ClipboardList,
 } from "lucide-react";
 
-function Dashboard({ products, activityLogs }) {
+function Dashboard({
+  products,
+  activityLogs,
+  loadingProducts,
+  loadingActivities,
+  error,
+}) {
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -24,7 +32,7 @@ function Dashboard({ products, activityLogs }) {
   const [loadingRequests, setLoadingRequests] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/requests", {
+    fetch(`${API_URL}/requests`, {
       credentials: "include",
     })
       .then((res) => {
@@ -126,7 +134,7 @@ function Dashboard({ products, activityLogs }) {
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
           Dashboard
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-405">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Welcome back,{" "}
           <strong className="text-slate-900 dark:text-white font-semibold">
             {user?.fullName}
@@ -135,6 +143,13 @@ function Dashboard({ products, activityLogs }) {
         </p>
       </div>
 
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 text-red-700 dark:text-red-400 rounded-xl flex items-center gap-3 animate-slideIn">
+          <AlertCircle className="flex-shrink-0" size={18} />
+          <span className="text-sm font-semibold">{error}</span>
+        </div>
+      )}
+
       {user?.role === "admin" ? (
         /* ==================== ADMIN DASHBOARD ==================== */
         <div className="space-y-8 animate-slideIn">
@@ -142,25 +157,49 @@ function Dashboard({ products, activityLogs }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
               title="Total Products"
-              value={totalProducts}
+              value={
+                loadingProducts ? (
+                  <span className="inline-block w-12 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  totalProducts
+                )
+              }
               type="total"
               icon="Package"
             />
             <StatCard
               title="Inventory Value"
-              value={`₹${totalValue.toLocaleString()}`}
+              value={
+                loadingProducts ? (
+                  <span className="inline-block w-20 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  `₹${totalValue.toLocaleString()}`
+                )
+              }
               type="value"
               icon="DollarSign"
             />
             <StatCard
               title="Low Stock Items"
-              value={lowStockCount}
+              value={
+                loadingProducts ? (
+                  <span className="inline-block w-12 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  lowStockCount
+                )
+              }
               type="warning"
               icon="AlertTriangle"
             />
             <StatCard
               title="Pending Approvals"
-              value={pendingRequests.length}
+              value={
+                loadingRequests ? (
+                  <span className="inline-block w-12 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  pendingRequests.length
+                )
+              }
               type="critical"
               icon="Clock"
             />
@@ -251,7 +290,11 @@ function Dashboard({ products, activityLogs }) {
                   <AlertTriangle className="text-amber-500" size={18} />{" "}
                   Critical Alerts
                 </h2>
-                {outOfStockCount === 0 && lowStockCount === 0 ? (
+                {loadingProducts ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="w-6 h-6 border-2 border-purple-650 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : outOfStockCount === 0 && lowStockCount === 0 ? (
                   <p className="text-sm text-slate-500 dark:text-slate-400">
                     ✅ All stock levels healthy.
                   </p>
@@ -292,13 +335,17 @@ function Dashboard({ products, activityLogs }) {
               <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
                 <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                   <Activity
-                    className="text-purple-650 dark:text-purple-400"
+                    className="text-purple-600 dark:text-purple-400"
                     size={18}
                   />{" "}
                   Organization Activity Log
                 </h2>
                 <div className="space-y-3 max-h-[380px] overflow-y-auto pr-2">
-                  {activityLogs.length === 0 ? (
+                  {loadingActivities ? (
+                    <div className="flex flex-col items-center justify-center py-16">
+                      <div className="w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  ) : activityLogs.length === 0 ? (
                     <p className="text-sm text-slate-500 dark:text-slate-400 text-center py-10">
                       No recent team activities recorded.
                     </p>
@@ -355,25 +402,49 @@ function Dashboard({ products, activityLogs }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
               title="My Proposed Adjustments"
-              value={requests.length}
+              value={
+                loadingRequests ? (
+                  <span className="inline-block w-12 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  requests.length
+                )
+              }
               type="total"
               icon="Package"
             />
             <StatCard
               title="Pending Requests"
-              value={pendingRequests.length}
+              value={
+                loadingRequests ? (
+                  <span className="inline-block w-12 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  pendingRequests.length
+                )
+              }
               type="warning"
               icon="Clock"
             />
             <StatCard
               title="Approved Requests"
-              value={approvedRequests.length}
+              value={
+                loadingRequests ? (
+                  <span className="inline-block w-12 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  approvedRequests.length
+                )
+              }
               type="total"
               icon="CheckCircle2"
             />
             <StatCard
               title="Rejected Requests"
-              value={rejectedRequests.length}
+              value={
+                loadingRequests ? (
+                  <span className="inline-block w-12 h-6 bg-slate-200 dark:bg-slate-800 animate-pulse rounded"></span>
+                ) : (
+                  rejectedRequests.length
+                )
+              }
               type="critical"
               icon="XCircle"
             />
@@ -392,7 +463,11 @@ function Dashboard({ products, activityLogs }) {
                   target below.
                 </p>
 
-                {lowStockCount === 0 && outOfStockCount === 0 ? (
+                {loadingProducts ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="w-6 h-6 border-2 border-purple-650 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : lowStockCount === 0 && outOfStockCount === 0 ? (
                   <div className="p-4 bg-emerald-50/50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-900/30 rounded-xl text-center">
                     <p className="text-xs text-emerald-800 dark:text-emerald-400 font-semibold">
                       Stock level healthy
@@ -451,7 +526,11 @@ function Dashboard({ products, activityLogs }) {
                   </button>
                 </div>
 
-                {requests.length === 0 ? (
+                {loadingRequests ? (
+                  <div className="flex flex-col items-center justify-center py-10">
+                    <div className="w-8 h-8 border-2 border-purple-650 border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : requests.length === 0 ? (
                   <p className="text-sm text-slate-500 dark:text-slate-400 text-center py-10">
                     You haven't submitted any restock requests yet.
                   </p>

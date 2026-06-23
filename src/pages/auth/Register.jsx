@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
+import toast from "react-hot-toast";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -131,7 +133,7 @@ function Register() {
     }
 
     setIsLoading(true);
-    fetch("http://localhost:3000/register", {
+    fetch(`${API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,16 +151,16 @@ function Register() {
       .then((data) => {
         setIsLoading(false);
         if (data.message.includes("successfully")) {
-          alert(data.message);
+          toast.success(data.message);
           navigate("/login");
         } else {
-          alert(data.message || "Registration failed");
+          toast.error(data.message || "Registration failed");
         }
       })
       .catch((error) => {
         setIsLoading(false);
         console.error("Error:", error);
-        alert("Registration failed. Please check details.");
+        toast.error("Registration failed. Please check details.");
       });
   };
 

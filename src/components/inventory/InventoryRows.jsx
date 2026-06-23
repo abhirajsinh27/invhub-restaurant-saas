@@ -23,15 +23,23 @@ function InventoryRows({
         >
           <td className="px-6 py-4">
             <div>
-              <p className="font-semibold text-slate-900 dark:text-slate-100">{product.name}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{product.supplier}</p>
+              <p className="font-semibold text-slate-900 dark:text-slate-100">
+                {product.name}
+              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {product.supplier}
+              </p>
             </div>
           </td>
           <td className="px-6 py-4">
-            <p className="text-base font-semibold text-slate-900 dark:text-slate-100">{product.qty} {product.unit || "pcs"}</p>
+            <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
+              {product.qty} {product.unit || "pcs"}
+            </p>
           </td>
           <td className="px-6 py-4">
-            <p className="text-slate-900 dark:text-slate-100 text-sm">₹{product.price}</p>
+            <p className="text-slate-900 dark:text-slate-100 text-sm">
+              ₹{product.price}
+            </p>
           </td>
           <td className="px-6 py-4">
             <p className="text-slate-900 dark:text-slate-100 font-semibold text-sm">
@@ -47,7 +55,7 @@ function InventoryRows({
                 <button
                   onClick={() => updateQty(product._id, -1)}
                   disabled={product.qty === 0}
-                  className="w-7 h-7 rounded bg-red-50 dark:bg-red-955/20 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30 hover:bg-red-100 dark:hover:bg-red-955/40 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-bold text-sm"
+                  className="w-7 h-7 rounded bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/40 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-bold text-sm"
                 >
                   −
                 </button>
@@ -56,7 +64,7 @@ function InventoryRows({
                 </span>
                 <button
                   onClick={() => updateQty(product._id, 1)}
-                  className="w-7 h-7 rounded bg-emerald-50 dark:bg-emerald-955/20 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-955/40 flex items-center justify-center font-bold text-sm"
+                  className="w-7 h-7 rounded bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 flex items-center justify-center font-bold text-sm"
                 >
                   +
                 </button>
@@ -76,7 +84,7 @@ function InventoryRows({
                   />
                   <button
                     onClick={() => handleRestock(product._id)}
-                    className="px-2.5 py-1 bg-purple-650 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-500 text-white text-xs font-semibold rounded transition-colors"
+                    className="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-500 text-white text-xs font-semibold rounded transition-colors"
                   >
                     Restock
                   </button>
@@ -99,7 +107,7 @@ function InventoryRows({
                       },
                     })
                   }
-                  className="px-3 py-1.5 bg-purple-650 text-white text-xs font-semibold rounded hover:bg-purple-700 transition-colors"
+                  className="px-3 py-1.5 bg-purple-600 text-white text-xs font-semibold rounded hover:bg-purple-700 transition-colors"
                 >
                   Request Restock
                 </button>

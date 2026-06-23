@@ -5,6 +5,8 @@ import React, {
   useState,
 } from "react";
 
+import { API_URL } from "../config";
+
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
@@ -13,8 +15,17 @@ function AuthProvider({ children }) {
 
   const isAuthenticated = !!user;
 
+  const normalizeUser = (userData) => {
+    if (!userData) return null;
+    return {
+      ...userData,
+      userId: userData.userId || userData._id,
+      _id: userData._id || userData.userId,
+    };
+  };
+
   useEffect(() => {
-    fetch("http://localhost:3000/me", {
+    fetch(`${API_URL}/me`, {
       credentials: "include",
     })
       .then((res) => {
@@ -25,7 +36,7 @@ function AuthProvider({ children }) {
         return res.json();
       })
       .then((data) => {
-        setUser(data);
+        setUser(normalizeUser(data));
         setLoading(false);
       })
       .catch(() => {
@@ -35,11 +46,11 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = (userData) => {
-    setUser(userData);
+    setUser(normalizeUser(userData));
   };
 
   const logout = () => {
-  fetch("http://localhost:3000/logout", {
+  fetch(`${API_URL}/logout`, {
     method: "POST",
     credentials: "include",
   })

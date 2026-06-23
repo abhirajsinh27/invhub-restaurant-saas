@@ -44,7 +44,9 @@ function CategorySection({
               >
                 {categoryProducts.length} items
               </span>
-              <span className={`${badgeColor} text-xs font-semibold px-2 py-0.5 rounded-md`}>
+              <span
+                className={`${badgeColor} text-xs font-semibold px-2 py-0.5 rounded-md`}
+              >
                 {categoryStatus.label}
               </span>
             </div>
@@ -60,7 +62,7 @@ function CategorySection({
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-950/40 border-t border-slate-250 dark:border-slate-800">
+                <tr className="bg-slate-50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
                   <th className="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Product
                   </th>

@@ -9,6 +9,7 @@ import {
   Inbox,
   Loader2
 } from "lucide-react";
+import { API_URL } from "../config";
 
 function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -20,7 +21,7 @@ function NotificationsPage() {
 
   const fetchNotifications = () => {
     setLoading(true);
-    fetch("http://localhost:3000/notifications", {
+    fetch(`${API_URL}/notifications`, {
       credentials: "include",
     })
       .then((res) => {
@@ -38,7 +39,7 @@ function NotificationsPage() {
   };
 
   const handleMarkAsRead = (id) => {
-    fetch(`http://localhost:3000/notifications/${id}/read`, {
+    fetch(`${API_URL}/notifications/${id}/read`, {
       method: "PUT",
       credentials: "include",
     })
@@ -57,7 +58,7 @@ function NotificationsPage() {
   const handleMarkAllRead = () => {
     if (notifications.filter((n) => !n.read).length === 0) return;
 
-    fetch("http://localhost:3000/notifications/read-all", {
+    fetch(`${API_URL}/notifications/read-all`, {
       method: "PUT",
       credentials: "include",
     })

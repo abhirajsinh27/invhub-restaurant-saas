@@ -16,6 +16,7 @@ import {
   Package,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { API_URL } from "../config";
 
 function Profile() {
   const { logout, user } = useAuth();
@@ -41,14 +42,10 @@ function Profile() {
   // Store edited form data temporarily
   const [editFormData, setEditFormData] = useState(formData);
 
-  const [summary, setSummary] = useState({
-    requestsCreated: 0,
-    actionsPerformed: 0,
-    productsManaged: 0,
-  });
+  const [summary, setSummary] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/me/summary", {
+    fetch(`${API_URL}/me/summary`, {
       credentials: "include",
     })
       .then((res) => (res.ok ? res.json() : null))
@@ -76,8 +73,6 @@ function Profile() {
       });
     }
   }, [user]);
-
-  // ===== STEP 2: Helper Functions =====
 
   // Handle when user clicks "Edit" button
   const handleEditClick = () => {
@@ -226,7 +221,7 @@ function Profile() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs text-slate-500 dark:text-slate-450 font-semibold uppercase tracking-wider">
+                    <label className="block text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                       Full Name
                     </label>
                     <p className="text-base font-bold text-slate-900 dark:text-slate-100 mt-1">
@@ -234,7 +229,7 @@ function Profile() {
                     </p>
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-500 dark:text-slate-450 font-semibold uppercase tracking-wider">
+                    <label className="block text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                       Email Address
                     </label>
                     <p className="text-base font-semibold text-slate-800 dark:text-slate-200 mt-1">
@@ -242,15 +237,15 @@ function Profile() {
                     </p>
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-500 dark:text-slate-450 font-semibold uppercase tracking-wider">
+                    <label className="block text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                       System Role
                     </label>
-                    <span className="inline-block px-2.5 py-0.5 mt-1 bg-purple-50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-400 border border-purple-100 dark:border-purple-900/30 text-xs font-bold rounded-md">
+                    <span className="inline-block px-2.5 py-0.5 mt-1 bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border border-purple-100 dark:border-purple-900/30 text-xs font-bold rounded-md">
                       {formData.role}
                     </span>
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-500 dark:text-slate-450 font-semibold uppercase tracking-wider">
+                    <label className="block text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                       Department
                     </label>
                     <p className="text-base font-semibold text-slate-800 dark:text-slate-200 mt-1">
@@ -271,7 +266,7 @@ function Profile() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-xs text-slate-550 dark:text-slate-450 font-semibold uppercase tracking-wider">
+                    <label className="block text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                       Organization Name
                     </label>
                     <p className="text-base font-bold text-slate-900 dark:text-slate-100 mt-1">
@@ -279,7 +274,7 @@ function Profile() {
                     </p>
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-550 dark:text-slate-455 font-semibold uppercase tracking-wider">
+                    <label className="block text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                       Join Code
                     </label>
                     {user?.role === "admin" ? (
@@ -293,7 +288,7 @@ function Profile() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-xs text-slate-550 dark:text-slate-455 font-semibold uppercase tracking-wider">
+                    <label className="block text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                       Total Members
                     </label>
                     <p className="text-base font-semibold text-slate-800 dark:text-slate-200 mt-1">
@@ -304,58 +299,77 @@ function Profile() {
               </div>
 
               {/* Operational Summary Card */}
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8">
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-8">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                   <Activity
-                    className="text-emerald-600 dark:text-emerald-450"
+                    className="text-emerald-600 dark:text-emerald-400"
                     size={18}
-                  />{" "}
+                  />
                   Operational Summary
                 </h3>
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {/* Requests Created */}
-                  <div className="p-4 bg-purple-50/30 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/30 rounded-xl flex items-center gap-4">
-                    <div className="p-2.5 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400 rounded-lg">
-                      <ClipboardList size={18} />
+                  <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:shadow-md">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                        <ClipboardList size={20} />
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xl font-bold text-slate-900 dark:text-white">
-                        {summary.requestsCreated}
-                      </p>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-450 uppercase tracking-wider font-bold mt-0.5">
-                        Requests Created
-                      </p>
-                    </div>
+
+                    <p className="text-3xl font-extrabold text-slate-900 dark:text-white">
+                      {summary ? (
+                        summary.requestsCreated
+                      ) : (
+                        <span className="inline-block w-12 h-8 bg-slate-200 dark:bg-slate-700 animate-pulse rounded" />
+                      )}
+                    </p>
+
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">
+                      Requests Created
+                    </p>
                   </div>
 
                   {/* Actions Logged */}
-                  <div className="p-4 bg-blue-50/30 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-xl flex items-center gap-4">
-                    <div className="p-2.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 rounded-lg">
-                      <Activity size={18} />
+                  <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:shadow-md">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                        <Activity size={20} />
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xl font-bold text-slate-900 dark:text-white">
-                        {summary.actionsPerformed}
-                      </p>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-450 uppercase tracking-wider font-bold mt-0.5">
-                        Actions Logged
-                      </p>
-                    </div>
+
+                    <p className="text-3xl font-extrabold text-slate-900 dark:text-white">
+                      {summary ? (
+                        summary.actionsPerformed
+                      ) : (
+                        <span className="inline-block w-12 h-8 bg-slate-200 dark:bg-slate-700 animate-pulse rounded" />
+                      )}
+                    </p>
+
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">
+                      Actions Logged
+                    </p>
                   </div>
 
                   {/* Products Managed */}
-                  <div className="p-4 bg-emerald-50/30 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 rounded-xl flex items-center gap-4">
-                    <div className="p-2.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 rounded-lg">
-                      <Package size={18} />
+                  <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:shadow-md">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                        <Package size={20} />
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xl font-bold text-slate-900 dark:text-white">
-                        {summary.productsManaged}
-                      </p>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-450 uppercase tracking-wider font-bold mt-0.5">
-                        Products Managed
-                      </p>
-                    </div>
+
+                    <p className="text-3xl font-extrabold text-slate-900 dark:text-white">
+                      {summary ? (
+                        summary.productsManaged
+                      ) : (
+                        <span className="inline-block w-12 h-8 bg-slate-200 dark:bg-slate-700 animate-pulse rounded" />
+                      )}
+                    </p>
+
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">
+                      Products Managed
+                    </p>
                   </div>
                 </div>
               </div>
@@ -380,7 +394,7 @@ function Profile() {
                     name="name"
                     value={editFormData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-slate-205 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
+                    className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -395,7 +409,7 @@ function Profile() {
                     name="email"
                     value={editFormData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-slate-205 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
+                    className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -410,7 +424,7 @@ function Profile() {
                     name="phone"
                     value={editFormData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-slate-205 dark:border-slate-800 bg-white dark:bg-slate-955 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
+                    className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
                     placeholder="Enter your phone number"
                   />
                 </div>
@@ -425,7 +439,7 @@ function Profile() {
                     name="location"
                     value={editFormData.location}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-slate-205 dark:border-slate-800 bg-white dark:bg-slate-955 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
+                    className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
                     placeholder="Enter your location"
                   />
                 </div>
@@ -440,7 +454,7 @@ function Profile() {
                     name="department"
                     value={editFormData.department}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-slate-205 dark:border-slate-800 bg-white dark:bg-slate-955 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
+                    className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-sm transition"
                     placeholder="Enter your department"
                   />
                 </div>
@@ -451,7 +465,7 @@ function Profile() {
                 {/* Save Button */}
                 <button
                   onClick={handleSaveChanges}
-                  className="flex-1 flex items-center justify-center space-x-1.5 px-4 py-2 bg-emerald-650 hover:bg-emerald-700 text-white rounded-lg transition font-semibold text-sm cursor-pointer"
+                  className="flex-1 flex items-center justify-center space-x-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition font-semibold text-sm cursor-pointer"
                 >
                   <Save className="h-4 w-4" />
                   <span>Save Changes</span>
@@ -460,7 +474,7 @@ function Profile() {
                 {/* Cancel Button */}
                 <button
                   onClick={handleCancelEdit}
-                  className="flex-1 flex items-center justify-center space-x-1.5 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-705 text-slate-700 dark:text-slate-300 rounded-lg transition font-semibold text-sm cursor-pointer"
+                  className="flex-1 flex items-center justify-center space-x-1.5 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg transition font-semibold text-sm cursor-pointer"
                 >
                   <X className="h-4 w-4" />
                   <span>Cancel</span>

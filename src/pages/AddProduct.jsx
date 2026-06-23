@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Package, AlertCircle, CheckCircle } from "lucide-react";
 import { categories,categoryCodes } from "../data/categories";
+import { API_URL } from "../config";
 
 function AddProduct({ setProducts,fetchActivities}) {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function AddProduct({ setProducts,fetchActivities}) {
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
  
 
   const generateSKU = (category) => {
@@ -95,27 +97,37 @@ function AddProduct({ setProducts,fetchActivities}) {
       updatedAt: new Date().toLocaleDateString(),
     };
 
-  fetch("http://localhost:3000/products", {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newProduct),
-  })
-    .then((res) => res.json())
-    .then((createdProduct) => {
-      setProducts((prev) => [...prev, createdProduct]);
-    fetchActivities();
-    setSuccess(true);
+    setError(null);
+    setSuccess(false);
 
-    setTimeout(() => {
-      navigate("/products");
-    }, 1500);
+    fetch(`${API_URL}/products`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newProduct),
     })
-    .catch((err) => {
-      console.error("Error adding product:", err);
-    });
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || "Failed to add product.");
+        }
+        return data;
+      })
+      .then((createdProduct) => {
+        setProducts((prev) => [...prev, createdProduct]);
+        fetchActivities();
+        setSuccess(true);
+
+        setTimeout(() => {
+          navigate("/products");
+        }, 1500);
+      })
+      .catch((err) => {
+        console.error("Error adding product:", err);
+        setError(err.message || "Failed to add product. Please verify your data and try again.");
+      });
   };
 
   return (
@@ -137,10 +149,19 @@ function AddProduct({ setProducts,fetchActivities}) {
         </div>
 
         {success && (
-          <div className="mb-6 p-4 bg-green-50/50 dark:bg-green-950/20 border border-green-200 dark:border-green-900/30 rounded-xl flex items-center gap-3 animate-slideIn">
+          <div className="mb-6 p-4 bg-green-50/50 dark:bg-green-955/20 border border-green-200 dark:border-green-900/30 rounded-xl flex items-center gap-3 animate-slideIn">
             <CheckCircle className="text-green-600 dark:text-green-400" size={20} />
             <p className="text-green-700 dark:text-green-400 font-semibold text-sm">
               Product added successfully! Redirecting...
+            </p>
+          </div>
+        )}
+
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 rounded-xl flex items-center gap-3 animate-slideIn">
+            <AlertCircle className="text-red-650 dark:text-red-400" size={20} />
+            <p className="text-red-700 dark:text-red-400 font-semibold text-sm">
+              {error}
             </p>
           </div>
         )}

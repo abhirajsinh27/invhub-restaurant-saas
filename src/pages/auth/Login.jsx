@@ -11,6 +11,8 @@ import {
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { API_URL } from "../../config";
+import toast from "react-hot-toast";
 
 function Login() {
   const { login } = useAuth();
@@ -73,7 +75,7 @@ function Login() {
 
     setIsLoading(true);
 
-    fetch("http://localhost:3000/login", {
+    fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,16 +91,15 @@ function Login() {
         setIsLoading(false);
 
         if (data.message === "Login successful") {
-          alert("Login successful!");
           login(data.user);
           navigate("/");
         } else {
-          alert(data.message || "Login failed");
+          toast.error(data.message || "Login failed");
         }
       })
       .catch((err) => {
         setIsLoading(false);
-        alert("login failed ");
+        toast.error("Login failed. Please check details.");
       });
   };
   return (
@@ -168,12 +169,6 @@ function Login() {
                 "InvHub transformed how we manage inventory at our restaurant
                 groups. It's intuitive and incredibly reliable."
               </p>
-              <p className="text-slate-900 dark:text-white font-semibold">
-                Sarah Johnson
-              </p>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">
-                Operations Director, TasteGroup
-              </p>
             </div>
           </div>
 
@@ -235,12 +230,6 @@ function Login() {
                   <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
                     Password
                   </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-xs text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 transition"
-                  >
-                    Forgot password?
-                  </Link>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-4 top-3.5 h-5 w-5 text-slate-400 dark:text-slate-500" />
@@ -274,24 +263,6 @@ function Login() {
                     <span className="mr-1">⚠️</span> {errors.password}
                   </p>
                 )}
-              </div>
-
-              {/* Remember Me */}
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="rememberMe"
-                  id="rememberMe"
-                  checked={formData.rememberMe}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-purple-600 focus:ring-purple-500 focus:ring-offset-0"
-                />
-                <label
-                  htmlFor="rememberMe"
-                  className="ml-3 text-sm text-slate-600 dark:text-slate-300"
-                >
-                  Remember me for 30 days
-                </label>
               </div>
 
               {/* Submit Button */}

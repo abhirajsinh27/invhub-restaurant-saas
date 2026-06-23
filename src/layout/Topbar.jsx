@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { API_URL } from "../config";
 
 function Topbar() {
   const { user, logout } = useAuth();
@@ -95,7 +96,7 @@ function Topbar() {
   // Fetch notifications
   const fetchNotifications = () => {
     if (!user) return;
-    fetch("http://localhost:3000/notifications", {
+    fetch(`${API_URL}/notifications`, {
       credentials: "include",
     })
       .then((res) => (res.ok ? res.json() : []))
@@ -126,7 +127,7 @@ function Topbar() {
 
   const handleMarkAsRead = (id, e) => {
     e.stopPropagation();
-    fetch(`http://localhost:3000/notifications/${id}/read`, {
+    fetch(`${API_URL}/notifications/${id}/read`, {
       method: "PUT",
       credentials: "include",
     })
@@ -256,7 +257,7 @@ function Topbar() {
             className={`p-2 rounded-full transition cursor-pointer relative ${
               showNotifications
                 ? "bg-slate-100 dark:bg-slate-800 text-purple-600 dark:text-purple-400"
-                : "text-slate-400 hover:text-purple-650 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                : "text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-slate-100 dark:hover:bg-slate-800"
             }`}
           >
             <Bell size={18} />
@@ -360,7 +361,7 @@ function Topbar() {
               {initials}
             </div>
             <div className="flex flex-col text-left select-none">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-205 line-clamp-1 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                 {user?.fullName || "Account"}
               </span>
               <span className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-0.5">

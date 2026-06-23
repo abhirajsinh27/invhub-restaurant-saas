@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
+import { API_URL } from "../config";
+import toast from "react-hot-toast";
 import {
   ClipboardList,
   CheckCircle2,
@@ -41,7 +43,7 @@ function Requests({ products, setProducts }) {
 
   const fetchRequests = () => {
     setLoading(true);
-    fetch("http://localhost:3000/requests", {
+    fetch(`${API_URL}/requests`, {
       credentials: "include",
     })
       .then((res) => {
@@ -61,16 +63,16 @@ function Requests({ products, setProducts }) {
   const handleSubmitRequest = (e) => {
     e.preventDefault();
     if (!selectedProductId) {
-      alert("Please select a product.");
+      toast.error("Please select a product.");
       return;
     }
     if (requestedQty === "" || Number(requestedQty) < 0) {
-      alert("Please enter a valid non-negative quantity.");
+      toast.error("Please enter a valid non-negative quantity.");
       return;
     }
 
     setSubmitting(true);
-    fetch("http://localhost:3000/requests", {
+    fetch(`${API_URL}/requests`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -90,10 +92,10 @@ function Requests({ products, setProducts }) {
         setRequestedQty("");
         setReason("");
         setSubmitting(false);
-        alert("✅ Request submitted successfully!");
+        toast.success("Request submitted successfully!");
       })
       .catch((err) => {
-        alert("❌ Error: " + err.message);
+        toast.error("Error: " + err.message);
         setSubmitting(false);
       });
   };
@@ -102,7 +104,7 @@ function Requests({ products, setProducts }) {
     if (!window.confirm("Are you sure you want to APPROVE this request?"))
       return;
 
-    fetch(`http://localhost:3000/requests/${id}/approve`, {
+    fetch(`${API_URL}/requests/${id}/approve`, {
       method: "PUT",
       credentials: "include",
     })
@@ -120,16 +122,16 @@ function Requests({ products, setProducts }) {
               : p,
           ),
         );
-        alert("✅ Request approved and inventory updated!");
+        toast.success("Request approved and inventory updated!");
       })
-      .catch((err) => alert("❌ Error: " + err.message));
+      .catch((err) => toast.error("Error: " + err.message));
   };
 
   const handleReject = (id) => {
     if (!window.confirm("Are you sure you want to REJECT this request?"))
       return;
 
-    fetch(`http://localhost:3000/requests/${id}/reject`, {
+    fetch(`${API_URL}/requests/${id}/reject`, {
       method: "PUT",
       credentials: "include",
     })
@@ -139,9 +141,9 @@ function Requests({ products, setProducts }) {
       })
       .then((updatedReq) => {
         setRequests((prev) => prev.map((r) => (r._id === id ? updatedReq : r)));
-        alert("❌ Request rejected.");
+        toast.success("Request rejected.");
       })
-      .catch((err) => alert("❌ Error: " + err.message));
+      .catch((err) => toast.error("Error: " + err.message));
   };
 
   const getStatusBadge = (status) => {
