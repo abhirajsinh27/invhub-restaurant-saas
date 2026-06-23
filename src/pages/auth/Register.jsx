@@ -177,7 +177,7 @@ function Register() {
 
       <div className="relative w-full max-w-2xl z-10">
         {/* Registration Card */}
-        <div className="bg-white dark:bg-slate-900 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95 rounded-2xl shadow-xl p-8 md:p-10 border border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div className="bg-white dark:bg-slate-900 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95 rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 border border-slate-200 dark:border-slate-800 transition-colors duration-300">
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center space-x-3 mb-4">
@@ -205,7 +205,7 @@ function Register() {
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
                 Join Type
               </label>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() =>

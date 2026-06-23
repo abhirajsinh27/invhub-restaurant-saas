@@ -25,13 +25,13 @@ function ProductFilters({
         />
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2">
-          <Filter size={16} className="text-slate-400 dark:text-slate-500" />
+      <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <Filter size={16} className="text-slate-400 dark:text-slate-500 flex-shrink-0" />
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:border-purple-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 font-medium text-sm"
+            className="w-full sm:w-auto px-3 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:border-purple-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 font-medium text-sm"
           >
             <option value="all">All Statuses</option>
             <option value="in_stock">In Stock</option>
@@ -43,7 +43,7 @@ function ProductFilters({
         <select
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
-          className="px-3 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:border-purple-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 font-medium text-sm"
+          className="w-full sm:w-auto px-3 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:outline-none focus:border-purple-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 font-medium text-sm"
         >
           <option value="all">All Categories</option>
           {categories.map((category) => (

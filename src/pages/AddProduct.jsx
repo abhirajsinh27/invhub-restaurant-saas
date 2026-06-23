@@ -132,7 +132,7 @@ function AddProduct({ setProducts,fetchActivities}) {
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-xl">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-8 rounded-xl">
         {/* Header */}
         <div className="flex items-center gap-3.5 mb-8 select-none">
           <div className="p-2.5 bg-blue-50 dark:bg-blue-955/50 text-blue-600 dark:text-blue-400 rounded-lg border border-blue-200 dark:border-blue-900/50">
@@ -370,7 +370,7 @@ function AddProduct({ setProducts,fetchActivities}) {
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-4 pt-4 select-none">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4 select-none">
             <button
               type="submit"
               className="flex-1 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition font-semibold text-sm cursor-pointer"

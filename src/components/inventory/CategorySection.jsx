@@ -33,7 +33,7 @@ function CategorySection({
           onClick={() => toggleCategory(category)}
           className={`w-full px-6 py-4.5 ${headerStyle} flex items-center justify-between font-semibold transition-all`}
         >
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-left">
             <div className="flex items-center gap-2 text-slate-900 dark:text-white">
               {getStatusIcon(categoryStatus.status)}
               <span className="text-base font-bold">{category}</span>

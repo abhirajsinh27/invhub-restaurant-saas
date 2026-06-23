@@ -173,7 +173,7 @@ function Login() {
           </div>
 
           {/* Right Side - Login Form */}
-          <div className="bg-white dark:bg-slate-900 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95 rounded-2xl shadow-xl p-8 md:p-10 border border-slate-200 dark:border-slate-800 transition-colors duration-300">
+          <div className="bg-white dark:bg-slate-900 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95 rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 border border-slate-200 dark:border-slate-800 transition-colors duration-300">
             {/* Mobile Logo */}
             <div className="lg:hidden text-center mb-8">
               <div className="flex items-center justify-center space-x-3 mb-4">

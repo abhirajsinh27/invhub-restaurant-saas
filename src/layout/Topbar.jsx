@@ -15,12 +15,13 @@ import {
   ChevronDown,
   Sun,
   Moon,
+  Menu,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { API_URL } from "../config";
 
-function Topbar() {
+function Topbar({ onMenuClick }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -228,15 +229,24 @@ function Topbar() {
     : "Staff";
 
   return (
-    <div className="flex items-center justify-between h-18 px-8 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 relative z-40 transition-colors duration-300">
+    <div className="flex items-center justify-between h-18 px-4 md:px-8 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 relative z-40 transition-colors duration-300">
       {/* Left: Dynamic Page Title */}
-      <div className="flex flex-col select-none">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">
-          {routeInfo.title}
-        </h2>
-        <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-          {routeInfo.subtitle}
-        </span>
+      <div className="flex items-center gap-3 select-none min-w-0">
+        <button
+          onClick={onMenuClick}
+          className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition cursor-pointer lg:hidden flex-shrink-0"
+          title="Toggle Navigation Menu"
+        >
+          <Menu size={20} />
+        </button>
+        <div className="flex flex-col min-w-0">
+          <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-tight truncate">
+            {routeInfo.title}
+          </h2>
+          <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate hidden sm:inline">
+            {routeInfo.subtitle}
+          </span>
+        </div>
       </div>
 
       {/* Right: Actions (Theme, Notifications, Profile) */}

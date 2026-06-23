@@ -111,7 +111,7 @@ function Profile() {
 
   // ===== STEP 3: Render Component =====
   return (
-    <div className="p-8">
+    <div className="space-y-6">
       {/* ===== HEADER SECTION ===== */}
       <div className="mb-8 select-none">
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
@@ -201,7 +201,7 @@ function Profile() {
           {!isEditing ? (
             <div className="space-y-6">
               {/* Account Information Card */}
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8">
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 sm:p-8">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <User
@@ -256,7 +256,7 @@ function Profile() {
               </div>
 
               {/* Organization Information Card */}
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8">
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 sm:p-8">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                   <Building2
                     className="text-blue-650 dark:text-blue-400"
@@ -299,7 +299,7 @@ function Profile() {
               </div>
 
               {/* Operational Summary Card */}
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-8">
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-8">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                   <Activity
                     className="text-emerald-600 dark:text-emerald-400"
@@ -376,7 +376,7 @@ function Profile() {
             </div>
           ) : (
             // EDIT FORM - Edit Mode
-            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8">
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 sm:p-8">
               {/* Edit Form Header */}
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
                 Edit Your Profile
@@ -461,7 +461,7 @@ function Profile() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 mt-8">
+              <div className="flex flex-col sm:flex-row gap-3 mt-8">
                 {/* Save Button */}
                 <button
                   onClick={handleSaveChanges}

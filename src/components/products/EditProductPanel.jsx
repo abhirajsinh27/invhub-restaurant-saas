@@ -11,7 +11,7 @@ function EditProductPanel({
 }) {
   return (
     <div
-      className={`fixed top-0 right-0 h-screen w-96 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl transform transition-transform duration-300 z-50 flex flex-col ${
+      className={`fixed top-0 right-0 h-screen w-full max-w-md sm:w-96 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl transform transition-transform duration-300 z-50 flex flex-col ${
         editingId ? "translate-x-0" : "translate-x-full"
       }`}
     >
@@ -171,7 +171,7 @@ function EditProductPanel({
       </div>
 
       {/* Footer */}
-      <div className="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 flex gap-3 sticky bottom-0 select-none">
+      <div className="p-5 sm:p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 flex flex-col-reverse sm:flex-row gap-3 sticky bottom-0 select-none">
         <button
           onClick={() => setEditingId(null)}
           className="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-semibold rounded-lg transition cursor-pointer"
